@@ -1,22 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login System</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Login Flow System</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      margin-top: 80px;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .active {
+      display: block;
+    }
+
+    input {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      width: 250px;
+    }
+
+    button {
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="card">
+<!-- PAGE 1 -->
+<div id="loginPage" class="page active">
   <h2>Login</h2>
 
   <input id="email" placeholder="Email">
   <input id="password" type="password" placeholder="Password">
 
-  <button onclick="login()">Login</button>
+  <button onclick="startProcess()">Login</button>
+</div>
 
-  <p id="msg" style="margin-top:15px; font-weight:500;">
-    Loading...
-  </p>
+<!-- PAGE 2 -->
+<div id="loadingPage" class="page">
+  <h2>Loading...</h2>
+  <p>Please wait 1 minute</p>
+</div>
+
+<!-- PAGE 3 -->
+<div id="resultPage" class="page">
+  <h2>Message from Google Sheet</h2>
+  <p id="msg">Loading...</p>
 </div>
 
 <script src="app.js"></script>
