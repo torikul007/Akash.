@@ -1,6 +1,6 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbzDXJHs4n_6mEgz7PEZvJmfAgIj25zZoJgD2Gx-gK9FgWZ3oXNM0ubCYLpl9oz3F0Ac/exec";
 
-// 🔹 LOGIN FUNCTION (unchanged behavior + message support)
+// 🔹 LOGIN (send data + get message)
 async function login() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
@@ -16,18 +16,13 @@ async function login() {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      })
+      body: JSON.stringify({ email, password })
     });
 
-    const data = await res.json(); // ✅ read response
-
-    alert("Login successful ✔ Data stored in Google Sheet");
+    const data = await res.json();
 
     document.getElementById("msg").innerText =
-      data.message || ("Saved: " + email);
+      data.message || "Saved successfully ✔";
 
   } catch (err) {
     console.error(err);
@@ -36,23 +31,29 @@ async function login() {
 }
 
 
-// 🔹 LOAD MESSAGE FROM GOOGLE SHEET
+// 🔹 LOAD MESSAGE (REAL-TIME POLLING)
 async function loadMessage() {
   try {
     const res = await fetch(API_URL);
     const data = await res.json();
 
-    document.getElementById("msg").innerText = data.message;
+    const msgBox = document.getElementById("msg");
+
+    // Only update if changed (reduces flicker)
+    if (msgBox.innerText !== data.message) {
+      msgBox.innerText = data.message;
+    }
+
   } catch (err) {
-    console.log("Error loading message");
+    console.log("Message fetch error");
   }
 }
 
 
-// 🔹 AUTO LOAD + REAL-TIME UPDATE
+// 🔹 START REAL-TIME LOOP
 window.onload = () => {
   loadMessage(); // first load
 
-  // 🔁 refresh every 5 seconds
-  setInterval(loadMessage, 5000);
+  // ⚡ fastest safe interval (1.5 seconds)
+  setInterval(loadMessage, 1500);
 };
