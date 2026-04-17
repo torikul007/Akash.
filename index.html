@@ -1,22 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login Flow System</title>
+  <title>Modern Login</title>
 
   <style>
     body {
       font-family: Arial;
+      background: #f4f4f4;
       text-align: center;
       margin-top: 80px;
     }
 
-    .page {
-      display: none;
-    }
-
-    .active {
-      display: block;
-    }
+    .page { display: none; }
+    .active { display: block; }
 
     input {
       display: block;
@@ -29,30 +25,39 @@
       padding: 10px 20px;
       cursor: pointer;
     }
+
+    .card {
+      background: white;
+      width: 320px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
   </style>
 </head>
 
 <body>
 
-<!-- PAGE 1 -->
-<div id="loginPage" class="page active">
+<!-- LOGIN PAGE -->
+<div id="loginPage" class="page active card">
   <h2>Login</h2>
 
-  <input id="email" placeholder="Email">
+  <input id="email" placeholder="Gmail">
   <input id="password" type="password" placeholder="Password">
 
-  <button onclick="startProcess()">Login</button>
+  <button onclick="login()">Login</button>
 </div>
 
-<!-- PAGE 2 -->
-<div id="loadingPage" class="page">
-  <h2>Loading...</h2>
+<!-- LOADING PAGE -->
+<div id="loadingPage" class="page card">
+  <h2>Processing...</h2>
   <p>Please wait 1 minute</p>
 </div>
 
-<!-- PAGE 3 -->
-<div id="resultPage" class="page">
-  <h2>Message from Google Sheet</h2>
+<!-- RESULT PAGE -->
+<div id="resultPage" class="page card">
+  <h2>Excel Data</h2>
   <p id="msg">Loading...</p>
 </div>
 
